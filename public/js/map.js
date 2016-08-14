@@ -6,8 +6,9 @@ var PokemonMap = function (ctnId) {
         'Mystic',
         'Valor',
         'Instinct'
-    ],
-            this.ctnId = ctnId;
+    ];
+    
+    this.ctnId = ctnId;
 
     this.follow = true;
 
@@ -21,10 +22,10 @@ var PokemonMap = function (ctnId) {
 
 
     this.initMap = function () {
-        var position, 
-            last_pos_string = localStorage.getItem("position"),
-            zoom,
-            last_zoom = localStorage.getItem('zoom');
+        var position,
+                last_pos_string = localStorage.getItem("position"),
+                zoom,
+                last_zoom = localStorage.getItem('zoom');
         if (last_pos_string) {
             position = JSON.parse(last_pos_string);
         } else {
@@ -33,7 +34,7 @@ var PokemonMap = function (ctnId) {
                 lng: -79.3832
             };
         }
-        if ( last_zoom ) {
+        if (last_zoom) {
             zoom = parseInt(last_zoom);
         } else {
             zoom = 16;
@@ -43,18 +44,23 @@ var PokemonMap = function (ctnId) {
             zoom: zoom,
             mapTypeId: 'roadmap'
         });
-        
-        this.map.addListener('zoom_changed', function() {
+
+        this.map.addListener('zoom_changed', function () {
             window.localStorage.setItem('zoom', this.zoom);
         });
-        this.map.addListener('drag', function() {
+        this.map.addListener('drag', function () {
             this.setFollow(false);
         }.bind(this));
+        
+        this.map.addListener('bounds_changed', $.throttle(2000, function() {
+            this.updateForts();
+        }.bind(this)));
 
         EventDispatcher.addEventListener("position", this.updateTrainer.bind(this));
         EventDispatcher.addEventListener("pokestop", this.updatePokestop.bind(this));
         EventDispatcher.addEventListener("gym", this.updateGym.bind(this));
         EventDispatcher.addEventListener("pokemon", this.markPokemon.bind(this));
+        
     };
 
     this.updateTrainer = function (event) {
@@ -96,6 +102,19 @@ var PokemonMap = function (ctnId) {
                 });
             }
         }
+    };
+    
+    this.updateForts = function() {
+        var mapBounds = this.map.getBounds();
+        var arrayBounds = [
+            mapBounds.getSouthWest().lat(),
+            mapBounds.getNorthEast().lng(),
+            mapBounds.getNorthEast().lat(),
+            mapBounds.getSouthWest().lng()
+        ];
+        $.post('service.php?method=getForts', {bounds:arrayBounds}, function(reply) {
+            
+        }.bind(this));
     };
 
     this.updatePokestop = function (event) {
@@ -150,14 +169,14 @@ var PokemonMap = function (ctnId) {
             optimized: false,
             clickable: false
         });
-        
+
         this.pokemons[event["encounter_id"]] = marker;
     };
-    
-    this.setFollow = function(follow) {
+
+    this.setFollow = function (follow) {
         this.follow = follow;
-        if ( follow ) {
-            if ( this.pathcoords.length > 0 ) {
+        if (follow) {
+            if (this.pathcoords.length > 0) {
                 this.map.panTo(this.pathcoords[this.pathcoords.length - 1]);
             }
         }

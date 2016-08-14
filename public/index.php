@@ -27,6 +27,7 @@ require '../autoloader.php';
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" 
                 crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.js"></script>
         <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $config['gmapkey']; ?>&libraries=drawing"></script>
         <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
         <script type="text/javascript" 
