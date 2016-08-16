@@ -4,13 +4,15 @@ $config = require '../config.php';
 
 require '../autoloader.php';
 
+header('Content-Type: application/json');
+
 if ( empty($_GET['method']) ) {
     sendError('missing method');
     exit();
 }
 $method = empty($_GET['method'])?'':$_GET['method'];
 
-$handler = new ServiceHandler();
+$handler = new ServiceHandler($config);
 
 if ( ! method_exists($handler, $method) ) {
     sendError('Method '.$method.' not exists');

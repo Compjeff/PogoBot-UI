@@ -108,46 +108,55 @@ var PokemonMap = function (ctnId) {
         var mapBounds = this.map.getBounds();
         var arrayBounds = [
             mapBounds.getSouthWest().lat(),
-            mapBounds.getNorthEast().lng(),
+            mapBounds.getSouthWest().lng(),
             mapBounds.getNorthEast().lat(),
-            mapBounds.getSouthWest().lng()
+            mapBounds.getNorthEast().lng() 
         ];
         $.post('service.php?method=getForts', {bounds:arrayBounds}, function(reply) {
-            
+            if ( reply['done']) {
+                var result = reply['result'];
+                var self = this;
+                $.each(result['gyms'], function() {
+                    self.updateGym(this);
+                });
+                $.each(result['pokestops'], function() {
+                    self.updatePokestop(this);
+                });
+            }
         }.bind(this));
     };
 
     this.updatePokestop = function (event) {
-        if (this.pokestops[event["id"]]) {
+        if (this.pokestops[event["_id"]]) {
             return;
         }
 
         var marker = new google.maps.Marker({
             map: this.map,
             position: {
-                lat: event.lat,
-                lng: event.lng
+                lat: event.loc[0],
+                lng: event.loc[1]
             },
             icon: 'image/forts/img_pokestop.png'
         });
-        this.pokestops[event['id']] = marker;
+        this.pokestops[event['_id']] = marker;
     };
 
     this.updateGym = function (event) {
-        if (this.gyms[event["id"]]) {
+        if (this.gyms[event["_id"]]) {
             return;
         }
 
         var marker = new google.maps.Marker({
             map: this.map,
             position: {
-                lat: event.lat,
-                lng: event.lng
+                lat: event.loc[0],
+                lng: event.loc[1]
             },
             icon: 'image/forts/' + this.teams[(event.owned_by_team || 0)] + '.png'
         });
 
-        this.gyms[event["id"]] = marker;
+        this.gyms[event["_id"]] = marker;
     };
 
     this.markPokemon = function (event) {

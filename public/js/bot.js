@@ -25,10 +25,6 @@ var PokemonBot = function (ip, port, account) {
         this.socket.on('pokemon_appeared:' + this.account, function(msg) {
             this.processPokemon(msg.data);
         }.bind(this));
-
-        this.socket.on('update_web_cells:' + this.account, function (msg) {
-            this.processCells(msg.data['cells']);
-        }.bind(this));
         
         this.socket.on('moving_to_fort:' + this.account, function(msg) {
             this.gotMovingToFortMessage(msg.data);
@@ -42,56 +38,7 @@ var PokemonBot = function (ip, port, account) {
             this.gotPokemonCaughtMessage(msg.data);
         }.bind(this));
     };
-
-    this.processCells = function (cells) {
-        self = this;
-        $.each(cells, function () {
-            if ( this.catchable_pokemons ) {
-                self.processCatchablePokemons(this.catchable_pokemons);
-            }
-            if (this.forts) {
-                self.processForts(this.forts);
-            }
-        });
-    };
-
-    this.processForts = function (forts) {
-        self = this;
-        $.each(forts, function () {
-            if (this.gym_details) {
-                self.processGym(this);
-            } else if (this.type && (this.type == 1)) {
-                self.processPokeStop(this);
-            }
-        });
-    };
-
-    this.processGym = function (gym) {
-        EventDispatcher.dispatchEvent({
-            type: "gym",
-            id: gym["id"],
-            lat: gym["latitude"],
-            lng: gym["longitude"],
-            owned_by_team: gym['owned_by_team']
-        });
-    };
-
-    this.processPokeStop = function (pokeStop) {
-        EventDispatcher.dispatchEvent({
-            type: "pokestop",
-            id: pokeStop["id"],
-            lat: pokeStop["latitude"],
-            lng: pokeStop["longitude"]
-        });
-    };
-    
-    this.processCatchablePokemons = function(pokemons) {
-        self = this;
-        $.each(pokemons, function () {
-            self.processPokemon(this);
-        });
-    };
-    
+ 
     this.processPokemon = function(pokemon) {
         EventDispatcher.dispatchEvent({
             type: "pokemon",
