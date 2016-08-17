@@ -86,6 +86,12 @@ var PokemonBot = function (ip, port, account) {
     this.getPlayerInfo = function(callback) {
         this.sendCommand("get_player_info", null, function(reply) {
             var playerData = reply.player.player_data;
+            var pokemons = {};
+            var eggs = [];
+            var pokedex = {};
+            var candies = {};
+            var items = {};
+            var hatchings = [];
             $.each(reply.inventory.inventory_delta.inventory_items, function() {
                 var data = this.inventory_item_data;
                 if ( data.player_stats ) {
@@ -94,12 +100,48 @@ var PokemonBot = function (ip, port, account) {
                     }
                     return;
                 }
-                if ( data.player ) {
-                    console.log(data.player);
+                if ( data.pokemon_data ) {
+                    if ( data.pokemon_data.is_egg ) {
+                        eggs.push(data.pokemon_data);
+                        return;
+                    }
+                    if ( pokemons[data.pokemon_data.pokemon_id] ) {
+                        pokemons[data.pokemon_data.pokemon_id].push(data.pokemon_data);
+                    } else {
+                        pokemons[data.pokemon_data.pokemon_id] = [data.pokemon_data];
+                    }
+                    return;
                 }
+                if ( data.pokedex_entry ) {
+                    pokedex[data.pokedex_entry.pokemon_id] = data.pokedex_entry;
+                    return;
+                }
+                if ( data.candy ) {
+                    candies[data.candy.family_id] = data.candy.candy;
+                    return;
+                }
+                if ( data.item ) {
+                    if ( data.item.count ) {
+                        items[data.item.item_id] = data.item.count;
+                    }
+                    return;
+                }
+                if ( data.egg_incubators ) {
+                    $.each(data.egg_incubators.egg_incubator, function() {
+                        hatchings.push(this);
+                    });
+                    return;
+                }
+                console.log(data);
             });
             var result = {
-                player: playerData
+                player: playerData,
+                pokemons: pokemons,
+                eggs: eggs,
+                pokedex: pokedex,
+                candies: candies,
+                items: items,
+                hatchings: hatchings
             };
             callback(result);
         });

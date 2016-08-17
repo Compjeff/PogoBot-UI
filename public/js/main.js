@@ -40,11 +40,11 @@ var showInfoWindow = function(title, onShown) {
 };
 
 var showWidget = function(widgetName, args) {
-    $.post("widgets/" + widgetName + ".php", args, function(reply) {
+    $.post("widgets/" + widgetName + ".php", {args: JSON.stringify(args)}, function(reply) {
         $("#info-window .modal-body").html(reply);
     });
 };
 
 var showPlayerInfo = function() {
-    showWidget("player_info", window.playerInfo.player);
+    showWidget("player_info", window.playerInfo);
 };
