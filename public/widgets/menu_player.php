@@ -2,7 +2,8 @@
 
 $options = [
     ['label'=>'Player info', 'page'=>'player_info.php', 'click'=>'showPlayerInfo();'],
-    ['label'=>'Eggs', 'page'=>'eggs.php', 'click'=>'showEggs();']
+    ['label'=>'Eggs', 'page'=>'eggs.php', 'click'=>'showEggs();'],
+    ['label'=>'Items', 'page'=>'items.php', 'click'=>'showItems();'],
 ];
 $current = basename($_SERVER['SCRIPT_NAME']);
 

@@ -52,3 +52,7 @@ var showPlayerInfo = function() {
 var showEggs = function() {
     showWidget('eggs', window.playerInfo);
 };
+
+var showItems = function() {
+    showWidget('items', window.playerInfo);
+};
