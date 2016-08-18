@@ -12,6 +12,7 @@ foreach($items as $itemId => $itemCount) {
     $totalItems += $itemCount;
 }
 ?>
+<?php include __DIR__ . '/menu_player.php'; ?>
 <div class="row">
     <div class="col-md-3">
         <div class="info-item">

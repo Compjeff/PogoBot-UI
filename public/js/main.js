@@ -48,3 +48,7 @@ var showWidget = function(widgetName, args) {
 var showPlayerInfo = function() {
     showWidget("player_info", window.playerInfo);
 };
+
+var showEggs = function() {
+    showWidget('eggs', window.playerInfo);
+};
