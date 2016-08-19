@@ -1,10 +1,25 @@
 <?php
 $args = json_decode($_POST['args'], true);
 
+$player = $args['player'];
+
 $items = $args['items'];
+
+$totalItems = 1;
+foreach($items as $itemId => $itemCount) {
+    $totalItems += $itemCount;
+}
 
 include __DIR__ . '/menu_player.php';
 ?>
+
+<h3>
+    Items
+    &dash;
+    <small>
+    <?php echo $totalItems; ?> / <?php echo $player['max_item_storage']; ?>
+    </small>
+</h3>
 
 <div class="row">
     <div class="col-md-3">

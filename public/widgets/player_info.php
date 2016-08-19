@@ -7,12 +7,15 @@ foreach($pokemons as $pokemonId => $typeItems) {
     $totalPokemons += count($typeItems);
 }
 $items = $args['items'];
-$totalItems = 0;
+$totalItems = 1;
 foreach($items as $itemId => $itemCount) {
     $totalItems += $itemCount;
 }
 ?>
 <?php include __DIR__ . '/menu_player.php'; ?>
+
+<h3>Basic info</h3>
+
 <div class="row">
     <div class="col-md-3">
         <div class="info-item">

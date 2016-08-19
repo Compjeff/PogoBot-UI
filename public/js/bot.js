@@ -134,6 +134,7 @@ var PokemonBot = function (ip, port, account) {
                 }
                 console.log(data);
             });
+
             var result = {
                 player: playerData,
                 pokemons: pokemons,

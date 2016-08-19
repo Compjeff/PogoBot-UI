@@ -2,6 +2,7 @@
 
 $options = [
     ['label'=>'Player info', 'page'=>'player_info.php', 'click'=>'showPlayerInfo();'],
+    ['label'=>'Pokemons', 'page'=>'pokemons.php', 'click'=>'showPokemons();'],
     ['label'=>'Eggs', 'page'=>'eggs.php', 'click'=>'showEggs();'],
     ['label'=>'Items', 'page'=>'items.php', 'click'=>'showItems();'],
 ];
@@ -18,4 +19,4 @@ $current = basename($_SERVER['SCRIPT_NAME']);
     </button>
     <?php endforeach; ?>
 </div>
-<div class="clearfix"></div>
+

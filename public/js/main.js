@@ -49,6 +49,10 @@ var showPlayerInfo = function() {
     showWidget("player_info", window.playerInfo);
 };
 
+var showPokemons = function() {
+    showWidget('pokemons', window.playerInfo);
+};
+
 var showEggs = function() {
     showWidget('eggs', window.playerInfo);
 };

@@ -5,7 +5,13 @@ $player = $args['player'];
 
 $eggs = $args['eggs'];
 
-$hatchings = $args['hatchings'];
+$hatchings = [];
+
+foreach ( $args['hatchings'] as $item ) {
+    if ( ! empty($item['target_km_walked']) ) {
+        $hatchings[] = $item;
+    }
+}
 
 $summary = [
     '2' => 0,
@@ -22,7 +28,11 @@ foreach($eggs as $egg) {
 
 <?php include __DIR__ . '/menu_player.php'; ?>
 
-<h3>Hatching eggs</h3>
+<h3>
+    Hatching eggs
+    &dash;
+    <small>Hatching <?php echo count($hatchings); ?>, hatched <?php echo $player['eggs_hatched']; ?></small>
+</h3>
 
 <div class="list-group">
     <?php foreach ($hatchings as $item): ?>
